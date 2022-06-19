@@ -1,5 +1,5 @@
 // Store our API endpoint inside queryUrl
-queryURL= "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_week.geojson"
+var queryURL= "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_week.geojson";
 
 // Define a function we want to run once for each feature in the features array
 // Give each feature a popup describing the place and time of the earthquake
@@ -12,7 +12,6 @@ var streetmap = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
     attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
     maxZoom: 19,
   });
-
 
 // Define a baseMaps object to hold our base layers
 var baseMaps = {

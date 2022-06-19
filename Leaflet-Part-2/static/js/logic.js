@@ -1,5 +1,6 @@
-// Store our API endpoint inside queryUrl
-queryURL= "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_week.geojson"
+// Store our URLS with geojson data
+var queryURL= "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_week.geojson";
+var tectonicURL = "https://raw.githubusercontent.com/fraxen/tectonicplates/master/GeoJSON/PB2002_boundaries.json";
 
 // Define a function we want to run once for each feature in the features array
 // Give each feature a popup describing the place and time of the earthquake
@@ -12,15 +13,15 @@ var streetmap = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
     attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
     maxZoom: 19,
   });
-// var topo = L.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png', {
-//     attribution: 'Map data: &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, <a href="http://viewfinderpanoramas.org">SRTM</a> | Map style: &copy; <a href="https://opentopomap.org">OpenTopoMap</a> (<a href="https://creativecommons.org/licenses/by-sa/3.0/">CC-BY-SA</a>)',
-//     maxZoom: 18
-//   });
+var topo = L.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png', {
+	maxZoom: 17,
+	attribution: 'Map data: &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, <a href="http://viewfinderpanoramas.org">SRTM</a> | Map style: &copy; <a href="https://opentopomap.org">OpenTopoMap</a> (<a href="https://creativecommons.org/licenses/by-sa/3.0/">CC-BY-SA</a>)'
+});
 
 // Define a baseMaps object to hold our base layers
 var baseMaps = {
     "Street Map": streetmap,
-    //"Topographic Map": topo
+    "Topographic Map": topo,
     };
 // Create our map, giving it the streetmap and earthquakes layers to display on load
 var myMap = L.map("map", {
