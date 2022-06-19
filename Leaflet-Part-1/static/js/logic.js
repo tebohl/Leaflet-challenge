@@ -1,3 +1,6 @@
+// Store our API endpoint inside queryUrl
+queryURL= "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_week.geojson"
+
 // Define a function we want to run once for each feature in the features array
 // Give each feature a popup describing the place and time of the earthquake
 function popUpMsg(feature, layer) {
@@ -8,8 +11,8 @@ function popUpMsg(feature, layer) {
  // Define streetmap and darkmap layers
 var streetmap = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
     attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-    tileSize: 512,
-    maxZoom: 18,
+    tileSize: 514,
+    maxZoom: 19,
     zoomOffset: -1
   });
 
@@ -46,15 +49,19 @@ L.control.layers(baseMaps, overlayMaps, {
   collapsed: false
 }).addTo(myMap);
 
-// Store our API endpoint inside queryUrl
-queryURL= "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_week.geojson"
 
 // Perform a GET request to the query URL
-d3.json(queryUrl).then(function(data) {
-    // Create a GeoJSON layer containing the features array on the earthquakeData object
+d3.json(queryURL).then(function(data) {
+    
+    // Create a GeoJSON layer containing markers that vary in size based on earthquake magnitude
     // Run the onEachFeature function once for each piece of data in the array
     L.geoJSON(data, {
-      onEachFeature: popUpMsg
+        pointToLayer: function(feature, layer){
+            return new L.CircleMarker(layer, {
+               radius: feature.properties.mag
+            });
+        },
+        onEachFeature: popUpMsg
     }).addTo(earthquakes);
   
     earthquakes.addTo(myMap);
