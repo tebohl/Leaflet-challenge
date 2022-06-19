@@ -26,7 +26,7 @@ var baseMaps = {
 // Create our map, giving it the streetmap and earthquakes layers to display on load
 var myMap = L.map("map", {
     center: [ 37.09, -95.71 ],
-    zoom: 3,
+    zoom: 4,
     layers: [streetmap]     //default selected layer
     });
 // create layers
@@ -51,7 +51,7 @@ d3.json(queryURL).then(function(data) {
         pointToLayer: function(feature, layer){
             return new L.CircleMarker(layer, {
                radius: (feature.properties.mag)*4,
-               fillColor: magnitudeColor(feature.properties.mag),
+               fillColor: depthColor(feature.geometry.coordinates[2]),
                weight: 0.8,
                color: "#000000",
                fillOpacity: 0.6,
@@ -73,28 +73,27 @@ d3.json(tectonicURL).then(function(data) {
     tectonic.addTo(myMap);
 });
 
-//function to create color scale for magnitude
-function magnitudeColor(magnitude){
-    if (magnitude <1) {
+//Function to create color scale for depth
+function depthColor(depth){
+    if (depth <10) {
         return "#CCFFCC";
     }
-    else if (magnitude <2) {
+    else if (depth <20) {
         return "#339966";
     }
-    else if (magnitude <3) {
+    else if (depth <30) {
         return "#008000";
     }
-    else if (magnitude <4) {
+    else if (depth <40) {
         return "#99CC00";
     }
-    else if (magnitude <5) {
+    else if (depth <50) {
         return "#003300";
     }
     else {
         return "#333333";
     }
 }
-
 // Create a legend to display information about our map.
 var legend = L.control({
     position: "bottomright"
@@ -102,20 +101,19 @@ var legend = L.control({
 // When the layer control is added, insert a div with the class of "legend".
 legend.onAdd = function() {
     var div = L.DomUtil.create("div", "info legend");  
-    var legendHTML = "<h4>Earthquake Magnitude</h4>";
-    for (var mag = 0; mag <= 5; mag++){
-        if (mag < 1) {
-            legendHTML += `<p> &lt; 1: <i style='background: ${magnitudeColor(mag)}'></i></p>`;
+    var legendHTML = "<h4>Earthquake Depth (km)</h4>";
+    for (var d = 0; d <= 50; d+=10){
+        if (d < 10) {
+            legendHTML += `<p> &lt; 10: <i style='background: ${depthColor(d)}'></i></p>`;
         }
-        else if (mag < 5) {
-            legendHTML += `<p>${mag} - ${mag+1}: <i style='background: ${magnitudeColor(mag)}'></i></p>`;
+        else if (d < 50) {
+            legendHTML += `<p>${d} - ${d+10}: <i style='background: ${depthColor(d)}'></i></p>`;
         }
         else {
-            legendHTML += `<p> &gt; ${mag}: <i style='background: ${magnitudeColor(mag)}'></i></p>`;
+            legendHTML += `<p> &gt; ${d}: <i style='background: ${depthColor(d)}'></i></p>`;
         }
     }
     div.innerHTML += legendHTML;
-
     return div;
 };
 // Add the info legend to the map.
