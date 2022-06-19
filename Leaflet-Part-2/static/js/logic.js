@@ -8,7 +8,7 @@ function popUpMsg(feature, layer) {
     layer.bindPopup("<h3>" + feature.properties.place +
       "</h3><hr><p>" + new Date(feature.properties.time) + "</p>");
 }
- // Define streetmap and darkmap layers
+ // Define streetmap and topography layers
 var streetmap = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
     attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
     maxZoom: 19,
@@ -26,7 +26,7 @@ var baseMaps = {
 // Create our map, giving it the streetmap and earthquakes layers to display on load
 var myMap = L.map("map", {
     center: [ 37.09, -95.71 ],
-    zoom: 5,
+    zoom: 3,
     layers: [streetmap]     //default selected layer
     });
 // create layers
@@ -52,8 +52,8 @@ d3.json(queryURL).then(function(data) {
             return new L.CircleMarker(layer, {
                radius: (feature.properties.mag)*4,
                fillColor: magnitudeColor(feature.properties.mag),
-               weight: 0.6,
-               color: "#C0C0C0",
+               weight: 0.8,
+               color: "#000000",
                fillOpacity: 0.6,
             });
         },
@@ -75,23 +75,25 @@ d3.json(tectonicURL).then(function(data) {
 
 //function to create color scale for magnitude
 function magnitudeColor(magnitude){
-    if (magnitude <=1) {
-        return "#CCFFCC"
+    if (magnitude <1) {
+        return "#CCFFCC";
     }
-    else if (magnitude <=2) {
-        return "#339966"
+    else if (magnitude <2) {
+        return "#339966";
     }
-    else if (magnitude <=3) {
-        return "#008000"
+    else if (magnitude <3) {
+        return "#008000";
     }
-    else if (magnitude <=4) {
-        return "#99CC00"
+    else if (magnitude <4) {
+        return "#99CC00";
     }
-    else if (magnitude <=5) {
-        return "#003300"
+    else if (magnitude <5) {
+        return "#003300";
     }
-    else {return "#333333"}
-};
+    else {
+        return "#333333";
+    }
+}
 
 // Create a legend to display information about our map.
 var legend = L.control({
@@ -99,9 +101,20 @@ var legend = L.control({
   });
 // When the layer control is added, insert a div with the class of "legend".
 legend.onAdd = function() {
-    var div = L.DomUtil.create("div", "legend");
-    div.innerHTML += "<h4>Earthquake Magnitude</h4>";
-    //assign colors to values
+    var div = L.DomUtil.create("div", "info legend");  
+    var legendHTML = "<h4>Earthquake Magnitude</h4>";
+    for (var mag = 0; mag <= 5; mag++){
+        if (mag < 1) {
+            legendHTML += `<p> &lt; 1: <i style='background: ${magnitudeColor(mag)}'></i></p>`;
+        }
+        else if (mag < 5) {
+            legendHTML += `<p>${mag} - ${mag+1}: <i style='background: ${magnitudeColor(mag)}'></i></p>`;
+        }
+        else {
+            legendHTML += `<p> &gt; ${mag}: <i style='background: ${magnitudeColor(mag)}'></i></p>`;
+        }
+    }
+    div.innerHTML += legendHTML;
 
     return div;
 };
