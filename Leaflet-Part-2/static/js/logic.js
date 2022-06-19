@@ -29,11 +29,13 @@ var myMap = L.map("map", {
     zoom: 5,
     layers: [streetmap]     //default selected layer
     });
-// create layer; will attach data later on
+// create layers
 var earthquakes = L.layerGroup();
-// Create overlay object to hold our overlay layer
+var tectonic = L.layerGroup();
+// Create overlay object to hold our overlay layers
 var overlayMaps = {
-  Earthquakes: earthquakes
+  Earthquakes: earthquakes,
+  Tectonic_Plates: tectonic,
 };
 // Create a layer control
 // Pass in our baseMaps and overlayMaps
@@ -58,6 +60,17 @@ d3.json(queryURL).then(function(data) {
         onEachFeature: popUpMsg
     }).addTo(earthquakes);
     earthquakes.addTo(myMap);
+});
+
+// Perform a GET request to the tectonic URL
+d3.json(tectonicURL).then(function(data) {    
+    // Create a GeoJSON layer containing boundaries for tectonic plates
+    L.geoJSON(data, {
+        color: "blue",
+        weight: "3",
+        })  
+    .addTo(tectonic);
+    tectonic.addTo(myMap);
 });
 
 //function to create color scale for magnitude
