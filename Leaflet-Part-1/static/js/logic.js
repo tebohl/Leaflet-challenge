@@ -58,7 +58,9 @@ d3.json(queryURL).then(function(data) {
     L.geoJSON(data, {
         pointToLayer: function(feature, layer){
             return new L.CircleMarker(layer, {
-               radius: feature.properties.mag
+               radius: (feature.properties.mag)*3,
+               fillColor: feature.properties.mag,
+               weight: 0.6,
             });
         },
         onEachFeature: popUpMsg
