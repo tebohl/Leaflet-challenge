@@ -54,13 +54,15 @@ L.control.layers(baseMaps, overlayMaps, {
 d3.json(queryURL).then(function(data) {
     
     // Create a GeoJSON layer containing markers that vary in size based on earthquake magnitude
-    // Run the onEachFeature function once for each piece of data in the array
+    // Run the onEachFeature function once for each piece of data in the array for pop up
     L.geoJSON(data, {
         pointToLayer: function(feature, layer){
             return new L.CircleMarker(layer, {
-               radius: (feature.properties.mag)*3,
-               fillColor: feature.properties.mag,
+               radius: (feature.properties.mag)*4,
+               fillColor: magnitudeColor(feature.properties.mag),
                weight: 0.6,
+               color: "#C0C0C0",
+               fillOpacity: 0.6,
             });
         },
         onEachFeature: popUpMsg
@@ -68,3 +70,41 @@ d3.json(queryURL).then(function(data) {
   
     earthquakes.addTo(myMap);
 });
+
+//function to create color scale for magnitude
+function magnitudeColor(magnitude){
+    if (magnitude <=1) {
+        return "#CCFFCC"
+    }
+    else if (magnitude <=2) {
+        return "#339966"
+    }
+    else if (magnitude <=3) {
+        return "#008000"
+    }
+    else if (magnitude <=4) {
+        return "#99CC00"
+    }
+    else if (magnitude <=5) {
+        return "#003300"
+    }
+    else {return "#333333"}
+
+};
+
+// Create a legend to display information about our map.
+var legend = L.control({
+    position: "bottomright"
+  });
+  
+  // When the layer control is added, insert a div with the class of "legend".
+  legend.onAdd = function() {
+    var div = L.DomUtil.create("div", "legend");
+    div.innerHTML += "<h4>Earthquake Magnitude</h4>";
+    //assign colors to values
+
+    return div;
+  };
+  // Add the info legend to the map.
+  legend.addTo(myMap);
+  
