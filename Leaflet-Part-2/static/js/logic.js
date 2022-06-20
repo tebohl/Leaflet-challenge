@@ -68,8 +68,7 @@ d3.json(tectonicURL).then(function(data) {
     L.geoJSON(data, {
         color: "blue",
         weight: "3",
-        })  
-    .addTo(tectonic);
+        }).addTo(tectonic);
     tectonic.addTo(myMap);
 });
 
