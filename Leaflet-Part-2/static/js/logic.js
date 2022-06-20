@@ -54,7 +54,7 @@ d3.json(queryURL).then(function(data) {
                fillColor: depthColor(feature.geometry.coordinates[2]),
                weight: 0.8,
                color: "#000000",
-               fillOpacity: 0.6,
+               fillOpacity: 0.8,
             });
         },
         onEachFeature: popUpMsg

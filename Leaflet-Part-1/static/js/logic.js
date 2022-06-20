@@ -31,7 +31,7 @@ var overlayMaps = {
 };
 // Create a layer control
 // Pass in our baseMaps and overlayMaps
-L.control.layers(null, baseMaps, overlayMaps, {
+L.control.layers(null, overlayMaps, {
   collapsed: false
 }).addTo(myMap);
 
@@ -46,7 +46,7 @@ d3.json(queryURL).then(function(data) {
                fillColor: depthColor(feature.geometry.coordinates[2]),
                weight: 0.8,
                color: "#000000",
-               fillOpacity: 0.6,
+               fillOpacity: 0.8,
             });
         },
         onEachFeature: popUpMsg
