@@ -23,11 +23,11 @@ var baseMaps = {
     "Street Map": streetmap,
     "Topographic Map": topo,
     };
-// Create our map, giving it the streetmap and earthquakes layers to display on load
+// Create our map, giving it the streetmap layer to display on load
 var myMap = L.map("map", {
     center: [ 37.09, -95.71 ],
     zoom: 4,
-    layers: [streetmap]     //default selected layer
+    layers: [streetmap],     //default selected layer
     });
 // create layers
 var earthquakes = L.layerGroup();
@@ -40,7 +40,7 @@ var overlayMaps = {
 // Create a layer control
 // Pass in our baseMaps and overlayMaps
 L.control.layers(baseMaps, overlayMaps, {
-  collapsed: false
+  collapsed: false,
 }).addTo(myMap);
 
 // Perform a GET request to the query URL
@@ -57,7 +57,7 @@ d3.json(queryURL).then(function(data) {
                fillOpacity: 0.8,
             });
         },
-        onEachFeature: popUpMsg
+        onEachFeature: popUpMsg,
     }).addTo(earthquakes);
     earthquakes.addTo(myMap);
 });
