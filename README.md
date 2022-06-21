@@ -1,4 +1,4 @@
-# leaflet-challenge
+# Leaflet-challenge
 
 Here I used Leaflet to visualize an earthquake dataset from USGS. All of the earthquakes from the last 7 days are shown on the map at their respective lat/long points. I added data markers to reflect the magnitude of the earthquake by size and the depth of the earthquake by color. Earthquakes with higher magnitudes appear larger, and earthquakes with greater depth should appear darker in color. Included are popups that provide additional information about the earthquake when its associated marker is clicked as well as a legend to help provide context for the depth.
 
